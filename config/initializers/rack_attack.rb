@@ -1,7 +1,7 @@
 class Rack::Attack
   # Use fallback cache store if Redis unavailable
   cache_store = begin
-    redis_url = ENV.fetch('REDIS_URL', 'redis://localhost:6379/0')
+    redis_url = ENV.fetch("REDIS_URL", "redis://localhost:6379/0")
     ActiveSupport::Cache::RedisCacheStore.new(url: redis_url)
   rescue => e
     Rails.logger.warn "Using memory store for Rack::Attack: #{e.message}"
