@@ -1,16 +1,43 @@
 # Exported from Render on 2025-01-27T14:22:37Z
 services:
-- type: web
-  name: zedwx
-  runtime: docker
-  repo: https://github.com/Mutalenic/zedwx
-  plan: free
-  envVars:
-  - key: RAILS_MASTER_KEY
-    sync: false
-  - key: WEB_CONCURRENCY
-    sync: false
-  region: oregon
-  dockerContext: .
-  dockerfilePath: ./Dockerfile
+  - type: web
+    name: zedwx
+    runtime: docker
+    repo: https://github.com/Mutalenic/zedwx
+    plan: free
+    region: oregon
+    buildCommand: bundle install && bundle exec rake db:migrate
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: zedwx_db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: zedwx-redis
+          type: redis
+          property: connectionString
+
+  - type: redis
+    name: zedwx-redis
+    plan: free
+    ipAllowList: []
+
+  - type: postgres
+    name: zedwx_db
+    plan: free
+    ipAllowList: []
+    postDeploy: |
+      psql $DATABASE_URL -c "CREATE USER root WITH SUPERUSER LOGIN PASSWORD 'password';"
+      bundle exec rake db:migrate
+
+databases:
+  - name: zedwx_db
+    databaseName: zedwx_production
+    user: root
+
 version: "1"
