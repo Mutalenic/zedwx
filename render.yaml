@@ -28,10 +28,8 @@ services:
           property: connectionString
       - key: RAILS_ENV
         value: production
-      - key: SOLID_QUEUE_DATABASE_URL
-        fromDatabase:
-          name: zedwx_db
-          property: connectionString
+      - key: SECRET_KEY_BASE
+        generateValue: true
     dependsOn:
       - zedwx_db
       - zedwx-redis
@@ -39,14 +37,16 @@ services:
   - type: redis
     name: zedwx-redis
     plan: free
+    maxmemoryPolicy: noeviction
     ipAllowList: []
+    envVars:
+      - key: REDIS_MAXMEMORY
+        value: 256mb
 
   - type: postgres
     name: zedwx_db
     plan: free
     ipAllowList: []
-    initCommands:
-      - CREATE ROLE root WITH LOGIN SUPERUSER PASSWORD 'password';
 
 databases:
   - name: zedwx_db
