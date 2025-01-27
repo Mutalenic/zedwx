@@ -1,14 +1,14 @@
 class Rack::Attack
   # Use fallback cache store if Redis unavailable
-  cache_client = begin
-    redis_url = ENV.fetch("REDIS_URL")
+  cache_store = begin
+    redis_url = ENV.fetch("REDIS_URL", "redis://localhost:6379/0")
     ActiveSupport::Cache::RedisCacheStore.new(url: redis_url)
   rescue => e
     Rails.logger.warn "Using memory store for Rack::Attack: #{e.message}"
     ActiveSupport::Cache::MemoryStore.new
   end
 
-  Rack::Attack.cache.store = cache_client
+  Rack::Attack.cache.store = cache_store
 
   ### Throttle Spammy Clients ###
   throttle("requests by ip", limit: 100, period: 15.minutes) do |request|
