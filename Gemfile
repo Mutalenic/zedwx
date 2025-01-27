@@ -45,3 +45,7 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
+
+gem "faraday", "~> 2.12"
+gem "faraday-net_http"
+gem "httparty"
