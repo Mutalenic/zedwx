@@ -21,6 +21,9 @@ services:
           name: zedwx-redis
           type: redis
           property: connectionString
+    dependsOn:
+      - zedwx_db
+      - zedwx-redis
 
   - type: redis
     name: zedwx-redis
@@ -31,9 +34,9 @@ services:
     name: zedwx_db
     plan: free
     ipAllowList: []
-    postDeploy: |
-      psql $DATABASE_URL -c "CREATE USER root WITH SUPERUSER LOGIN PASSWORD 'password';"
-      bundle exec rake db:migrate
+    initCommands:
+      - CREATE ROLE root WITH LOGIN SUPERUSER PASSWORD 'password';
+    postDeploy: bundle exec rake db:migrate
 
 databases:
   - name: zedwx_db
