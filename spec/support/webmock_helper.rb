@@ -24,13 +24,13 @@ module WebmockHelper
           'latitude' => -15.4167,
           'longitude' => 28.2833,
           'daily' => {
-            'time' => ['2024-12-27', '2025-01-27'],
-            'temperature_2m_max' => [25.0, 26.0],
-            'temperature_2m_min' => [18.0, 19.0],
-            'precipitation_sum' => [0.0, 2.5]
+            'time' => [ '2024-12-27', '2025-01-27' ],
+            'temperature_2m_max' => [ 25.0, 26.0 ],
+            'temperature_2m_min' => [ 18.0, 19.0 ],
+            'precipitation_sum' => [ 0.0, 2.5 ]
           }
         }.to_json,
-        headers: {'Content-Type' => 'application/json'}
+        headers: { 'Content-Type' => 'application/json' }
       )
   end
 end

@@ -1,9 +1,9 @@
-require 'redis'
+require "redis"
 
 begin
   $redis = Redis.new(
-    host: ENV.fetch('REDIS_HOST', 'localhost'),
-    port: ENV.fetch('REDIS_PORT', '6379')
+    host: ENV.fetch("REDIS_HOST", "localhost"),
+    port: ENV.fetch("REDIS_PORT", "6379")
   )
   $redis.ping
   Rails.logger.info "Connected to Redis"

@@ -46,10 +46,10 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'webmock'
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "webmock"
 end
 
 gem "faraday", "~> 2.12"

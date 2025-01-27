@@ -5,10 +5,10 @@ module Api
 
       def current
         location = params[:location]
-        
+
         unless location.present? && LocationValidator.valid_location?(location)
-          return render json: { 
-            error: "Invalid location. Supported locations: #{LocationValidator.supported_locations.join(', ')}" 
+          return render json: {
+            error: "Invalid location. Supported locations: #{LocationValidator.supported_locations.join(', ')}"
           }, status: :bad_request
         end
 
@@ -22,8 +22,8 @@ module Api
         end_date = params[:end_date]
 
         unless location.present? && LocationValidator.valid_location?(location)
-          return render json: { 
-            error: "Invalid location. Supported locations: #{LocationValidator.supported_locations.join(', ')}" 
+          return render json: {
+            error: "Invalid location. Supported locations: #{LocationValidator.supported_locations.join(', ')}"
           }, status: :bad_request
         end
 
@@ -46,13 +46,13 @@ module Api
       end
 
       def handle_api_error(exception)
-        render json: { error: "Weather service unavailable: #{exception.message}" }, 
+        render json: { error: "Weather service unavailable: #{exception.message}" },
                status: :service_unavailable
       end
 
       def valid_date_range?(start_date, end_date)
         return false unless start_date.present? && end_date.present?
-        
+
         begin
           start_date = Date.parse(start_date)
           end_date = Date.parse(end_date)
