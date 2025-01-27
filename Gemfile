@@ -49,3 +49,6 @@ end
 gem "faraday", "~> 2.12"
 gem "faraday-net_http"
 gem "httparty"
+gem "redis"
+gem "redis-rails"
+gem "redis-store"
