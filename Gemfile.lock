@@ -345,6 +345,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 8.0.0)
   redis
+  redis-client
   rubocop-rails-omakase
   solid_cable
   solid_cache

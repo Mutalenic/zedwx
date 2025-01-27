@@ -6,17 +6,14 @@ module Api
       def current
         location = params[:location]
         
-        unless location.present?
-          return render_bad_request("Location parameter is required")
+        unless location.present? && LocationValidator.valid_location?(location)
+          return render json: { 
+            error: "Invalid location. Supported locations: #{LocationValidator.supported_locations.join(', ')}" 
+          }, status: :bad_request
         end
 
         weather_data = OpenMeteoService.get_current_weather(location)
-
-        if weather_data
-          render json: weather_data
-        else
-          render_not_found("Location not supported or weather data unavailable")
-        end
+        render json: weather_data
       end
 
       private

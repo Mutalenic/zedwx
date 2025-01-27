@@ -1,9 +1,12 @@
 require 'redis'
 
-REDIS_CONFIG = {
-  host: ENV.fetch('REDIS_HOST', 'localhost'),
-  port: ENV.fetch('REDIS_PORT', '6379'),
-  db: ENV.fetch('REDIS_DB', '0')
-}
-
-$redis = Redis.new(REDIS_CONFIG)
+begin
+  $redis = Redis.new(
+    host: ENV.fetch('REDIS_HOST', 'localhost'),
+    port: ENV.fetch('REDIS_PORT', '6379')
+  )
+  $redis.ping
+  Rails.logger.info "Connected to Redis"
+rescue Redis::CannotConnectError => e
+  Rails.logger.error "Failed to connect to Redis: #{e.message}"
+end
