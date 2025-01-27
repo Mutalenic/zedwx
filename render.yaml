@@ -1,0 +1,16 @@
+# Exported from Render on 2025-01-27T14:22:37Z
+services:
+- type: web
+  name: zedwx
+  runtime: docker
+  repo: https://github.com/Mutalenic/zedwx
+  plan: free
+  envVars:
+  - key: RAILS_MASTER_KEY
+    sync: false
+  - key: WEB_CONCURRENCY
+    sync: false
+  region: oregon
+  dockerContext: .
+  dockerfilePath: ./Dockerfile
+version: "1"
