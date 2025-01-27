@@ -1,8 +1,14 @@
 class Rack::Attack
-  ### Configure Cache ###
-  Rack::Attack.cache.store = ActiveSupport::Cache::RedisCacheStore.new(
-    url: ENV.fetch("REDIS_URL", "redis://localhost:6379/0")
-  )
+  # Use fallback cache store if Redis unavailable
+  cache_client = begin
+    redis_url = ENV.fetch("REDIS_URL")
+    ActiveSupport::Cache::RedisCacheStore.new(url: redis_url)
+  rescue => e
+    Rails.logger.warn "Using memory store for Rack::Attack: #{e.message}"
+    ActiveSupport::Cache::MemoryStore.new
+  end
+
+  Rack::Attack.cache.store = cache_client
 
   ### Throttle Spammy Clients ###
   throttle("requests by ip", limit: 100, period: 15.minutes) do |request|
@@ -32,12 +38,11 @@ class Rack::Attack
   end
 
   ### Custom Throttle Response ###
-  self.throttled_response = ->(env) {
-    retry_after = (env["rack.attack.match_data"] || {})[:period]
+  self.throttled_responder = lambda do |request|
     [
       429,
       { "Content-Type" => "application/json" },
-      [ { error: "Rate limit exceeded", retry_after: retry_after }.to_json ]
+      [ { error: "Rate limit exceeded" }.to_json ]
     ]
-  }
+  end
 end
