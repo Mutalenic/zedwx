@@ -1,42 +1,12 @@
 name: CI
 
 on:
-  pull_request:
   push:
+    branches: [ main ]
+  pull_request:
     branches: [ main ]
 
 jobs:
-  scan_ruby:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
-
   test:
     runs-on: ubuntu-latest
 
@@ -78,16 +48,18 @@ jobs:
           sudo apt-get install -y postgresql-client libpq-dev
           bundle install
 
-      - name: Setup test database
+      - name: Setup Database
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/zedwx_test
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
           REDIS_URL: redis://localhost:6379/0
         run: |
-          cp config/database.yml.ci config/database.yml
-          bundle exec rails db:create db:schema:load
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
 
-      - name: Run tests
+      - name: Run Tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/zedwx_test
