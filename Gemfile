@@ -47,5 +47,5 @@ group :development, :test do
 end
 
 gem "faraday", "~> 2.12"
-gem 'faraday-net_http'
-gem 'httparty'
+gem "faraday-net_http"
+gem "httparty"

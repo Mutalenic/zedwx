@@ -3,7 +3,7 @@ module Api
     class WeatherController < ApplicationController
       def current
         location = params[:location]
-        
+
         unless location.present?
           return render json: { error: "Location parameter is required" }, status: :bad_request
         end
