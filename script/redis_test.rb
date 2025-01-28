@@ -1,20 +1,34 @@
 require 'redis'
+require 'logger'
+
+logger = Logger.new(STDOUT)
 
 begin
-  redis = Redis.new(url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/0'))
+  redis_url = ENV.fetch('REDIS_URL', 'redis://localhost:6379/0')
+  logger.info "Connecting to Redis at #{redis_url}"
 
-  # Test connection
-  puts "Connection test: #{redis.ping == 'PONG' ? 'OK' : 'FAILED'}"
+  redis = Redis.new(url: redis_url)
 
-  # Test write/read
+  # Connection test
+  response = redis.ping
+  logger.info "Connection test: #{response == 'PONG' ? 'OK' : 'FAILED'}"
+
+  # Write/Read test
   redis.set('test_key', 'test_value')
   result = redis.get('test_key')
-  puts "Write/Read test: #{result == 'test_value' ? 'OK' : 'FAILED'}"
+  logger.info "Write/Read test: #{result == 'test_value' ? 'OK' : 'FAILED'}"
 
-  # Test expiration
-  redis.setex('expire_key', 1, 'will_expire')
-  puts "Expiration test: #{redis.ttl('expire_key') > 0 ? 'OK' : 'FAILED'}"
+  # Expiration test
+  redis.setex('expire_key', 5, 'will_expire')
+  ttl = redis.ttl('expire_key')
+  logger.info "Expiration test: TTL = #{ttl} seconds"
+
+  # Cache store test
+  redis.flushdb
+  logger.info "Cache cleared"
 
 rescue Redis::CannotConnectError => e
-  puts "Connection Error: #{e.message}"
+  logger.error "Connection Error: #{e.message}"
+rescue => e
+  logger.error "Unexpected Error: #{e.class} - #{e.message}"
 end
