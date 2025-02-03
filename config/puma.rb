@@ -39,6 +39,6 @@ plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 # Specify the PID file if provided.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
-# Disable serving static files from the `/public` folder by default
-# Use the Puma DSL `set` method instead of `config` as follows:
-set :public_file_server_enabled, ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
+# Disable serving static files from the `/public` folder by default.
+# Replace .present? with a pure Ruby check.
+set :public_file_server_enabled, (!ENV['RAILS_SERVE_STATIC_FILES'].to_s.empty? || !ENV['RENDER'].to_s.empty?)
