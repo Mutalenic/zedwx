@@ -33,12 +33,11 @@ port ENV.fetch("PORT", 3000)
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
-# Run the Solid Queue supervisor inside of Puma for single-server deployments
+# Run the Solid Queue supervisor inside of Puma for single-server deployments.
 plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 
 # Specify the PID file if provided.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
-# Disable serving static files from the `/public` folder by default.
-# Replace .present? with a pure Ruby check.
-set :public_file_server_enabled, (!ENV['RAILS_SERVE_STATIC_FILES'].to_s.empty? || !ENV['RENDER'].to_s.empty?)
+# Remove the unsupported "set :public_file_server_enabled" line.
+# Rails will manage static file serving via config/environments/production.rb.
