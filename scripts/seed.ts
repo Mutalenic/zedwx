@@ -39,7 +39,7 @@ Light winds throughout the day. Evening mild.
 
     // Seed sample forecasts for 5 provinces
     console.log('Creating sample forecasts...');
-    const provincesToSeed = PROVINCES.slice(0, 5); // Lusaka, Central, Copperbelt, Eastern, Luapula
+    const provincesToSeed = PROVINCES.slice(0, 5); // Central, Copperbelt, Eastern, Luapula, Muchinga
 
     for (const province of provincesToSeed) {
       const forecast: ProvinceForecast = {

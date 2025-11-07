@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -11,7 +9,7 @@ export default function Home() {
           <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             Zambian weather is generally warm and tropical, with distinct wet and dry seasons. The rainy season typically runs from November to April, bringing heavy showers and thunderstorms, while the dry season from May to October is characterized by clear skies and cooler nights. Regional variations exist, with the northern and northwestern provinces receiving more rainfall, and southern areas experiencing hotter, drier conditions.
           </p>
-          <p>Overall, Zambia's climate supports diverse ecosystems and agricultural activities.</p>
+          <p>Overall, Zambia&apos;s climate supports diverse ecosystems and agricultural activities.</p>
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           

@@ -40,9 +40,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Migration documentation (internal use only)
-MIGRATION_PLAN.md
-*_MIGRATION_*.md
-PHASE_*_IMPLEMENTATION.md
-migration-notes/

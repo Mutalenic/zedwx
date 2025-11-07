@@ -72,8 +72,8 @@ curl http://localhost:3000/api/v1/weather?location=Lusaka
 ### 2.1 Create Next.js App
 
 ```bash
-# Navigate to parent directory
-cd /home/nicholas/Documents/projects_personal
+# Navigate to your projects directory
+cd <your-projects-directory>
 
 # Create new Next.js app (in a temporary location first)
 npx create-next-app@latest zedwx-next --typescript --tailwind --app --no-src-dir --import-alias "@/*"
@@ -95,11 +95,11 @@ npx create-next-app@latest zedwx-next --typescript --tailwind --app --no-src-dir
 cd zedwx-next
 
 # Copy all Next.js files to the main repo (preserving Rails in archive)
-cp -r * /home/nicholas/Documents/projects_personal/zedwx/
-cp -r .* /home/nicholas/Documents/projects_personal/zedwx/ 2>/dev/null || true
+cp -r * <path-to-your-zedwx-repo>/
+cp -r .* <path-to-your-zedwx-repo>/ 2>/dev/null || true
 
 # Return to main repo
-cd /home/nicholas/Documents/projects_personal/zedwx
+cd <path-to-your-zedwx-repo>
 
 # Remove Rails files (they're safe in archive branch)
 rm -rf app/controllers app/jobs app/mailers app/models app/services app/views

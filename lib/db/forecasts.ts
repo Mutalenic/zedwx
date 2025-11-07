@@ -1,13 +1,6 @@
-import { config } from 'dotenv';
-import { resolve } from 'path';
 import { sql } from '@vercel/postgres';
 import { ProvinceForecast, Province } from '../models/weather';
 import { ProvinceForecastSchema } from '../schemas/weather';
-
-// Load environment variables if not in production
-if (process.env.NODE_ENV !== 'production') {
-  config({ path: resolve(process.cwd(), '.env.local') });
-}
 
 /**
  * Fetch a forecast from the database

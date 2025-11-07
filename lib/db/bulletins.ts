@@ -1,11 +1,16 @@
-import { config } from 'dotenv';
-import { resolve } from 'path';
 import { sql } from '@vercel/postgres';
+import { z } from 'zod';
 
-// Load environment variables if not in production
-if (process.env.NODE_ENV !== 'production') {
-  config({ path: resolve(process.cwd(), '.env.local') });
-}
+// Zod schema for type-safe database results
+const RawBulletinSchema = z.object({
+  id: z.number(),
+  bulletin_text: z.string(),
+  source: z.string(),
+  fetched_at: z.date(),
+  processed: z.boolean(),
+  created_at: z.date(),
+  updated_at: z.date(),
+});
 
 export interface RawBulletin {
   id: number;
@@ -72,7 +77,7 @@ export async function getUnprocessedBulletins(): Promise<RawBulletin[]> {
       LIMIT 50
     `;
 
-    return result.rows as RawBulletin[];
+    return z.array(RawBulletinSchema).parse(result.rows);
   } catch (error) {
     console.error('Error fetching unprocessed bulletins:', error);
     throw error;
@@ -95,7 +100,7 @@ export async function getBulletinById(id: number): Promise<RawBulletin | null> {
       return null;
     }
 
-    return result.rows[0] as RawBulletin;
+    return RawBulletinSchema.parse(result.rows[0]);
   } catch (error) {
     console.error('Error fetching bulletin by ID:', error);
     throw error;
