@@ -32,3 +32,8 @@
 /config/master.key
 
 /config/credentials/production.key
+
+# Migration documentation (internal use only)
+MIGRATION_PLAN.md
+*_MIGRATION_*.md
+migration-notes/
