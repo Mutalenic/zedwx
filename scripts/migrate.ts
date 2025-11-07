@@ -1,6 +1,11 @@
+import { config } from 'dotenv';
+import { resolve } from 'path';
 import { sql } from '@vercel/postgres';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+
+// Load .env.local
+config({ path: resolve(process.cwd(), '.env.local') });
 
 async function runMigrations() {
   try {
@@ -10,16 +15,9 @@ async function runMigrations() {
     const migrationPath = join(process.cwd(), 'migrations', '0001_initial_schema.sql');
     const migrationSQL = readFileSync(migrationPath, 'utf-8');
 
-    // Split by semicolon and execute each statement
-    const statements = migrationSQL
-      .split(';')
-      .map(s => s.trim())
-      .filter(s => s.length > 0 && !s.startsWith('--'));
-
-    for (let i = 0; i < statements.length; i++) {
-      console.log(`Executing statement ${i + 1}/${statements.length}...`);
-      await sql.query(statements[i]);
-    }
+    // Execute as a single transaction
+    console.log('Executing migration as a single transaction...');
+    await sql.query(migrationSQL);
 
     console.log('\n✅ Migrations completed successfully!');
 
